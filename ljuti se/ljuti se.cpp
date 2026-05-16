@@ -245,16 +245,41 @@ void vanid(float x, boja* bojs, int i, int pij, float kp) {
 		bojs[i].pijuni[pij].y = (x / 2) - kp;
 		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rp, rp);
 	}
+	if (i == 1)
+	{
+		setfillstyle(SOLID_FILL, BLUE);
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rm, rm);
+		bojs[i].pijuni[pij].x = x / 2 + kp;
+		bojs[i].pijuni[pij].y = (x / 2) - (5 * kp);
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rp, rp);
+	}
+	if (i == 2)
+	{
+		setfillstyle(SOLID_FILL, GREEN);
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rm, rm);
+		bojs[i].pijuni[pij].x = x / 2 - kp;
+		bojs[i].pijuni[pij].y = (x / 2) + (5 * kp);
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rp, rp);
+	}
+	if (i == 3)
+	{
+		setfillstyle(SOLID_FILL, RED);
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rm, rm);
+		bojs[i].pijuni[pij].x = x / 2 + (5 * kp);
+		bojs[i].pijuni[pij].y = (x / 2) + kp;
+		fillellipse(bojs[i].pijuni[pij].x, bojs[i].pijuni[pij].y, rp, rp);
+	}
 }
 
 void kretanje(float x, boja* bojs, int boj)
 {
 	float kp = x / 12;
 	getch();
-	int ran = (rand() % 6)+1;
+	int ran = 6;
 	int pij;
 	cout << ran;
-	if (pij = vani(boj, bojs) == 0) {
+	pij = vani(boj, bojs);
+	if ( pij== 0) {
 		if (ran == 6)
 		vanid(x, bojs, boj, pij,  kp);
 	}
