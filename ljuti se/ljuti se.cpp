@@ -5,14 +5,20 @@ using namespace std;
 
 struct pijun
 {
-	int id = 0; 
+	int id = 0;
 	bool gor = false, dol = false, lij = false, des = false;
-	float x, y;
-	bool kuca = true;
-
+	float x = 0, y = 0;
+	bool kuca = false;
 };
 
-void stvori(int boj, float x) 
+struct boja
+{
+	//zuta 1, plava 2, zelena 3, crvena 4
+	int id = 0; 
+	pijun pijuni[4];
+};
+
+void stvori(int boj, float x, boja* bojs)
 {
 	float p1, pom, rv, rm, kp, rp;
 	pom = (1.0 / 3) * x;//360
@@ -21,13 +27,12 @@ void stvori(int boj, float x)
 	rm = rv / 4;
 	kp = ((x / 2)) / 6;
 	rp = x / 72;
-	if (boj == 1) 
+	if (boj == 0) 
 	{
-		pijun zut[4];
-
+		bojs[boj].id = boj;
 		for (int i = 0; i < 4; i++) {
-			zut[i].id = i;
-			zut[i].des = true;
+			bojs[boj].pijuni[i].id = i;
+			bojs[boj].pijuni[i].des = true;
 		}
 		setfillstyle(SOLID_FILL, YELLOW);
 		fillellipse(p1 - rv / 2.5, p1 - rv / 2.5, rp, rp);
@@ -36,13 +41,13 @@ void stvori(int boj, float x)
 		fillellipse(p1 - rv / 2.5, p1 + rv / 2.5, rp, rp);
 	}
 
-	if (boj == 2)
+	if (boj == 1)
 	{
-		pijun plav[4];
 
+		bojs[boj].id = boj;
 		for (int i = 0; i < 4; i++) {
-			plav[i].id = i;
-			plav[i].dol = true;
+			bojs[boj].pijuni[i].id = i;
+			bojs[boj].pijuni[i].dol = true;
 		}
 		setfillstyle(SOLID_FILL, CYAN);
 		fillellipse((p1 + pom * 2) - rv / 2.5, p1 - rv / 2.5, rp, rp);
@@ -50,13 +55,13 @@ void stvori(int boj, float x)
 		fillellipse((p1 + pom * 2) + rv / 2.5, p1 + rv / 2.5, rp, rp);
 		fillellipse((p1 + pom * 2) - rv / 2.5, p1 + rv / 2.5, rp, rp);
 	}
-	if (boj == 3)
+	if (boj == 2)
 	{
-		pijun zel[4];
 
+		bojs[boj].id = boj;
 		for (int i = 0; i < 4; i++) {
-			zel[i].id = i;
-			zel[i].lij = true;
+			bojs[boj].pijuni[i].id = i;
+			bojs[boj].pijuni[i].lij = true;
 		}
 		setfillstyle(SOLID_FILL, GREEN);
 		fillellipse(p1 - rv / 2.5, (p1 + pom * 2) - rv / 2.5, rp, rp);
@@ -65,13 +70,13 @@ void stvori(int boj, float x)
 		fillellipse(p1 - rv / 2.5, (p1 + pom * 2) + rv / 2.5, rp, rp);
 	}
 
-	if (boj == 4)
+	if (boj == 3)
 	{
-		pijun crv[4];
 
+		bojs[boj].id = boj;
 		for (int i = 0; i < 4; i++) {
-			crv[i].id = i;
-			crv[i].gor = true;
+			bojs[boj].pijuni[i].id = i;
+			bojs[boj].pijuni[i].gor = true;
 		}
 		setfillstyle(SOLID_FILL, RED);
 		fillellipse((p1 + pom * 2) - rv / 2.5, (p1 + pom * 2) - rv / 2.5, rp, rp);
@@ -162,24 +167,35 @@ void templat(float x)
 
 void pijuni(int x) 
 {
-	int br, boj, int pij[4];
+	int br, boj;
+	boja bojs[4];
 	do 
 	{
 		system("CLS");
 		cout << "Koliko igraca igra: ";
 		cin >> br;
 	} while (br <= 0 || br >= 5);
-	for (; br != 0; br--) 
+	for (; br != 0; br--)
 	{
 		do {
 			cout << "Boja \n1-zuta\n2-plava\n3-zelena\n4-crvena\n";
 			cin >> boj;
 		} while (boj <= 0 || br >= 5);
-		stvori(boj, x);
-		pij[]
+		stvori(boj-1, x, &bojs[0]);
 	}
 
+	//for (int i = 0; i < 4; i++) {
+	//	cout << bojs[i].id << endl;
+	//	for (int j = 0; j < 4; j++)
+	//	{
+	//		cout << bojs[i].pijuni[j].id;
+	//	}
+	//	cout << endl << endl;
+	//}
+
+
 }
+
 
 void igra(float x) 
 {
