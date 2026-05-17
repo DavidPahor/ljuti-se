@@ -59,7 +59,7 @@ void stvori(int boj, float x, boja* bojs)
 			bojs[boj].pijuni[i].id = i + 1;
 			bojs[boj].pijuni[i].dol = true;
 		}
-		setfillstyle(SOLID_FILL, CYAN);
+		setfillstyle(SOLID_FILL, BLUE);
 		fillellipse((p1 + pom * 2) - rv / 2.5, p1 - rv / 2.5, rp, rp);
 		bojs[boj].pijuni[0].x = (p1 + pom * 2) - rv / 2.5;
 		bojs[boj].pijuni[0].y = p1 - rv / 2.5;
@@ -79,7 +79,7 @@ void stvori(int boj, float x, boja* bojs)
 		bojs[boj].id = boj + 1;
 		for (int i = 0; i < 4; i++) {
 			bojs[boj].pijuni[i].id = i + 1;
-			bojs[boj].pijuni[i].lij = true;
+			bojs[boj].pijuni[i].gor = true;
 		}
 		setfillstyle(SOLID_FILL, GREEN);
 		fillellipse(p1 - rv / 2.5, (p1 + pom * 2) - rv / 2.5, rp, rp);
@@ -203,17 +203,17 @@ void pijuni(float x, boja* bojs)
 	int br, boj;
 	do 
 	{
-		//system("CLS");
-		//cout << "Koliko igraca igra: ";
-		//cin >> br;
-		br = 1;
+		system("CLS");
+		cout << "Koliko igraca igra: ";
+		cin >> br;
+		//br = 1;
 	} while (br <= 0 || br >= 5);
 	for (; br != 0; br--)
 	{
 		do {
-			//cout << "Boja \n1-zuta\n2-plava\n3-zelena\n4-crvena\n";
-			//cin >> boj;
-			boj = 1;
+			cout << "Boja \n1-zuta\n2-plava\n3-zelena\n4-crvena\n";
+			cin >> boj;
+			//boj = 1;
 		} while (boj <= 0 || br >= 5);
 		stvori(boj-1, x, &bojs[0]);
 	}
@@ -299,15 +299,15 @@ void vani(float x, boja* bojs, int i, int pij, float kp) {
 	}
 }
 
-void provjeri(boja* bojs, int boj, int pij, float *okretaj, float *kuca, int rando)
+bool provjeri(boja* bojs, int boj, int pij, float *okretaj, float *kuca, int rando)
 {
-	bool pov = false;
+	bool ran = false;
 	for (int i = 0; i < 24; i+=2) 
 	{
-		cout << bojs[boj].pijuni[pij].x << "=+" << *(okretaj + i) << " i " << bojs[boj].pijuni[pij].y << "=+" << *(okretaj + i + 1) << endl;
+		//cout << bojs[boj].pijuni[pij].x << "=+" << *(okretaj + i) << " i " << bojs[boj].pijuni[pij].y << "=+" << *(okretaj + i + 1) << endl;
 		if ((bojs[boj].pijuni[pij].x == *(okretaj + i)) && (bojs[boj].pijuni[pij].y == *(okretaj + (i + 1)))) 
 		{
-			cout << "DA!!, promijeni" << endl;
+			//cout << "DA!!, promijeni" << endl;
 				bojs[boj].pijuni[pij].dol = false;
 				bojs[boj].pijuni[pij].gor = false;
 				bojs[boj].pijuni[pij].lij = false;
@@ -315,40 +315,41 @@ void provjeri(boja* bojs, int boj, int pij, float *okretaj, float *kuca, int ran
 
 				if (i == 0 || i == 4 || i == 8) {
 					if (i==0 && bojs[boj].pijuni[pij].start==false) {
-						rando++;
+						ran = true;
 					}
 					bojs[boj].pijuni[pij].dol = true;
-					cout << "dol true" << endl;
+					//cout << "dol true" << endl;
 					break;
 				}
 			else if (i == 2 || i == 18 || i == 22){
 					if (i == 2 && bojs[boj].pijuni[pij].start == false) {
-						rando++;
+						ran = true;
 					}
 				bojs[boj].pijuni[pij].des = true;
-				cout << "des true" << endl;
+				//cout << "des true" << endl;
 
 				break;
 				}
 			else if (i == 6 || i == 10 || i == 14) {
 					if (i == 6 && bojs[boj].pijuni[pij].start == false) {
-						rando++;
+						ran = true;
 					}
 				bojs[boj].pijuni[pij].lij = true;
-				cout << "lij true" << endl;
+				//cout << "lij true" << endl;
 
 				break;
 				}
 			else if (i == 12 || i == 16 || i == 20) {
 					if (i == 12 && bojs[boj].pijuni[pij].start == false) {
-						rando++;
+						ran = true;
 					}
 					bojs[boj].pijuni[pij].gor = true;
-					cout << "gor true" << endl;
+					//cout << "gor true" << endl;
 				break;
 				}
 		}
 	}
+	return ran;
 }
 
 void korak(boja* bojs, int i, int pij, float x)
@@ -405,7 +406,8 @@ void koraci(float x, boja* bojs, int i, int pij, float kp,int rando) {
 			bojs[i].pijuni[pij].y += kp;
 		else if (bojs[i].pijuni[pij].gor == true)
 			bojs[i].pijuni[pij].y -= kp;
-		provjeri(bojs, i, pij, &okretaj[0][0], &kuca[0][0], rando);
+		if (provjeri(bojs, i, pij, &okretaj[0][0], &kuca[0][0], rando))
+			rando++;
 	}
 	korak(bojs, i, pij, x);
 	if (bojs[i].pijuni[pij].start)
@@ -430,11 +432,12 @@ void kretanje(float x, boja* bojs, int boj)
 			if (ran == 6) {
 				pij = unupij(boj, bojs);
 				vani(x, bojs, boj, pij, kp);
-				ran = (rand() % 6) + 1;
-				getch();
-				cout << ran << endl;
-				koraci(x, bojs, boj, pij, kp, ran);
-				break;
+				do {
+					ran = (rand() % 6) + 1;
+					getch();
+					cout << ran << endl;
+					koraci(x, bojs, boj, pij, kp, ran);
+				} while (ran == 6);
 			}
 		}
 	}
@@ -453,10 +456,16 @@ void kretanje(float x, boja* bojs, int boj)
 				if (smije == true) {
 					for (int i = 0; i < 4; i++) {
 						if (bojs[boj].pijuni[i].kuca == true) {
-							vani(x, bojs, boj, pij, kp);
+							vani(x, bojs, boj, i, kp);
 							break;
 						}
 					}
+				}
+				else {
+					setfillstyle(SOLID_FILL, WHITE);
+					fillellipse(bojs[boj].pijuni[pij].x, bojs[boj].pijuni[pij].y, rm, rm);
+					koraci(x, bojs, boj, pij, kp, ran);
+					fillellipse(bojs[boj].pijuni[pij].x, bojs[boj].pijuni[pij].y, rp, rp);
 				}
 			}
 			else {
@@ -489,18 +498,18 @@ void bojaj(float x, boja *bojs)
 	float rp = x / 72;
 	float rm = x / 48;
 	float kp = x / 12;
-	if (bojs[2].id != 0) {
+	if (bojs[3].id != 0) {
 		setfillstyle(SOLID_FILL, GREEN);
 		fillellipse(x / 2 - kp, (x / 2) + (5 * kp), rm, rm);
 		for (int i = 0; i < 4; i++) {
-			fillellipse(bojs[2].pijuni[i].x, bojs[2].pijuni[i].y, rp, rp);
+			fillellipse(bojs[3].pijuni[i].x, bojs[3].pijuni[i].y, rp, rp);
 		}
 	}
-	if (bojs[3].id != 0) {
+	if (bojs[2].id != 0) {
 		setfillstyle(SOLID_FILL, RED);
 		fillellipse(x / 2 + (5 * kp), (x / 2) + kp, rm, rm);
 		for (int i = 0; i < 4; i++) {
-			fillellipse(bojs[3].pijuni[i].x, bojs[3].pijuni[i].y, rp, rp);
+			fillellipse(bojs[2].pijuni[i].x, bojs[2].pijuni[i].y, rp, rp);
 		}
 	}
 	if (bojs[1].id != 0) {
@@ -512,6 +521,7 @@ void bojaj(float x, boja *bojs)
 	}
 	if (bojs[0].id != 0) {
 		setfillstyle(SOLID_FILL, YELLOW);
+		fillellipse(x / 2 - (5 * kp), (x / 2)-kp, rm, rm);
 		for (int i = 0; i < 4; i++) {
 			fillellipse(bojs[0].pijuni[i].x, bojs[0].pijuni[i].y, rp, rp);
 		}
