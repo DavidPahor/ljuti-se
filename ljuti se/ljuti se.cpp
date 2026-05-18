@@ -11,6 +11,7 @@ struct pijun
 	bool kuca = true;
 	bool cilj = false;
 	bool start = false;
+	bool kraj = false;
 };
 
 struct boja
@@ -299,7 +300,7 @@ void vani(float x, boja* bojs, int i, int pij, float kp) {
 	}
 }
 
-bool provjeri(boja* bojs, int boj, int pij, float *okretaj, float *kuca, int rando)
+bool provjeri(boja* bojs, int boj, int pij, float *okretaj, int rando)
 {
 	bool ran = false;
 	for (int i = 0; i < 24; i+=2) 
@@ -349,35 +350,6 @@ bool provjeri(boja* bojs, int boj, int pij, float *okretaj, float *kuca, int ran
 			}
 		}
 	}
-
-	//for (int i = 0; i < 8; i += 2)
-	//{
-	//	if ((bojs[boj].pijuni[pij].x == *(kuca + i)) && (bojs[boj].pijuni[pij].y == *(kuca + (i + 1))))
-	//	{
-	//		//cout << "DA!!, promijeni" << endl;
-	//		bojs[boj].pijuni[pij].dol = false;
-	//		bojs[boj].pijuni[pij].gor = false;
-	//		bojs[boj].pijuni[pij].lij = false;
-	//		bojs[boj].pijuni[pij].des = false;
-
-	//		if (i == 0){
-	//			bojs[boj].pijuni[pij].des = true;
-	//			break;
-	//		}
-	//		else if (i == 2) {
-	//			bojs[boj].pijuni[pij].dol = true;
-	//			break;
-	//		}
-	//		else if (i == 4) {
-	//			bojs[boj].pijuni[pij].lij = true;
-	//			break;
-	//		}
-	//		else if (i == 6) {
-	//			bojs[boj].pijuni[pij].gor = true;
-	//			break;
-	//		}
-	//	}
-	//}
 	return ran;
 }
 
@@ -489,8 +461,7 @@ void jedenje(float x, boja* bojs, int boj, int pij)
 		if (i != boj) {
 			for (int j = 0; j < 4; j++){
 				if ((bojs[boj].pijuni[pij].x == bojs[i].pijuni[j].x) && (bojs[boj].pijuni[pij].y == bojs[i].pijuni[j].y)) {
-					cout << "jede boja Id " << bojs[boj].id << " pijun:" << bojs[boj].pijuni[pij].id;
-					cout << "pojedeni boja Id " << bojs[i].id << " pijun:" << bojs[i].pijuni[j].id;
+					cout << "jede" << endl;
 					pojedi(x,bojs,i,j);
 				}
 			}
@@ -498,7 +469,106 @@ void jedenje(float x, boja* bojs, int boj, int pij)
 	}
 }
 
-void koraci(float x, boja* bojs, int i, int pij, float kp,int rando) {
+void kuckret(boja* bojs, int boj, int pij, float* kuca, float x)
+{
+	for (int i = 0; i < 8; i += 2)
+{
+	if ((bojs[boj].pijuni[pij].x == *(kuca + i)) && (bojs[boj].pijuni[pij].y == *(kuca + (i + 1))))
+	{
+		//cout << "DA!!, promijeni" << endl;
+		bojs[boj].pijuni[pij].dol = false;
+		bojs[boj].pijuni[pij].gor = false;
+		bojs[boj].pijuni[pij].lij = false;
+		bojs[boj].pijuni[pij].des = false;
+
+		if (i == 0){
+			bojs[boj].pijuni[pij].des = true;
+			break;
+		}
+		else if (i == 2) {
+			bojs[boj].pijuni[pij].dol = true;
+			break;
+		}
+		else if (i == 4) {
+			bojs[boj].pijuni[pij].lij = true;
+			break;
+		}
+		else if (i == 6) {
+			bojs[boj].pijuni[pij].gor = true;
+			break;
+		}
+	}
+}
+}
+
+bool kucica(boja* bojs, int boj, int pij, float x)
+{
+	float kp = x / 12;
+	for (int i = 0; i < 5; i++)
+	{
+		if ((bojs[boj].pijuni[pij].x == x / 2 + (kp - (i * kp))) && (bojs[boj].pijuni[pij].y == x / 2 + kp))
+		{
+			if (boj == 0) {
+
+				bojs[boj].pijuni[pij].kuca = true;
+				return 1;
+			}
+		}
+		if ((bojs[boj].pijuni[pij].x == x / 2 + (kp + (i * kp))) && (bojs[boj].pijuni[pij].y == x / 2 - kp))
+		{
+			if (boj == 1) {
+				bojs[boj].pijuni[pij].kuca = true;
+				return 1;
+			}
+		}
+		if ((bojs[boj].pijuni[pij].x == x / 2 - kp) && (bojs[boj].pijuni[pij].y == x / 2 + (kp + (i * kp))))
+		{
+			if (boj == 2) {
+				bojs[boj].pijuni[pij].kuca = true;
+				return 1;
+			}
+		}
+		if ((bojs[boj].pijuni[pij].x == x / 2 + kp) && (bojs[boj].pijuni[pij].y == x / 2 + (kp + (i * kp))))
+		{
+			if (boj == 3) {
+				bojs[boj].pijuni[pij].kuca = true;
+				return 1;
+			}
+		}
+	}
+	if (bojs[boj].pijuni[pij].cilj)
+		return 1;
+
+	return 0;
+}
+
+bool provjer(boja* bojs, int boj, int pij,float x)
+{
+	float kp = x / 12;
+	if (boj == 0) {
+		if (bojs[boj].pijuni[pij].x>(x/2-kp)) {
+			return 0;
+		}
+	}
+	if (boj == 1) {
+		if (bojs[boj].pijuni[pij].y > (x / 2 - kp)) {
+			return 0;
+		}
+	}
+	if (boj == 2) {
+		if (bojs[boj].pijuni[pij].y < (x / 2 + kp)) {
+			return 0;
+		}
+	}
+	if (boj == 3) {
+		if (bojs[boj].pijuni[pij].x < (x / 2 + kp)) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+bool koraci(float x, boja* bojs, int i, int pij, float kp,int rando) {
 	cout << "koraci" << endl;
 	float okretaj[12][2] = {
 	{(x / 2) + kp,(x / 2) - (5 * kp) },//0  i1
@@ -529,25 +599,51 @@ void koraci(float x, boja* bojs, int i, int pij, float kp,int rando) {
 
 	//}
 
-	//if()kucica()
-
-	for (; rando != 0; rando--) {
-		if (bojs[i].pijuni[pij].des == true)
-			bojs[i].pijuni[pij].x += kp;
-		else if (bojs[i].pijuni[pij].lij == true)
-			bojs[i].pijuni[pij].x -= kp;
-		else if (bojs[i].pijuni[pij].dol == true)
-			bojs[i].pijuni[pij].y += kp;
-		else if (bojs[i].pijuni[pij].gor == true)
-			bojs[i].pijuni[pij].y -= kp;
-		if (provjeri(bojs, i, pij, &okretaj[0][0], &kuca[0][0], rando))
-			rando++;
+	if (kucica(bojs, i, pij, x))
+	{
+		if (bojs[i].pijuni[pij].cilj==0)
+			bojs[i].pijuni[pij].cilj = true;
+		float sx = bojs[i].pijuni[pij].x;
+		float sy = bojs[i].pijuni[pij].y;
+		for (; rando != 0; rando--) {
+			if (bojs[i].pijuni[pij].des == true)
+				bojs[i].pijuni[pij].x += kp;
+			else if (bojs[i].pijuni[pij].lij == true)
+				bojs[i].pijuni[pij].x -= kp;
+			else if (bojs[i].pijuni[pij].dol == true)
+				bojs[i].pijuni[pij].y += kp;
+			else if (bojs[i].pijuni[pij].gor == true)
+				bojs[i].pijuni[pij].y -= kp;
+			kuckret(bojs, i, pij, &okretaj[0][0], rando);
+			provjeri(bojs, i, pij, &okretaj[0][0], rando);
+		}
+		if (provjer(bojs, i, pij, x) == 0) {
+			bojs[i].pijuni[pij].x = sx;
+			bojs[i].pijuni[pij].y = sy;
+		}
 	}
+	else
+	{
+		for (; rando != 0; rando--) {
+			if (bojs[i].pijuni[pij].des == true)
+				bojs[i].pijuni[pij].x += kp;
+			else if (bojs[i].pijuni[pij].lij == true)
+				bojs[i].pijuni[pij].x -= kp;
+			else if (bojs[i].pijuni[pij].dol == true)
+				bojs[i].pijuni[pij].y += kp;
+			else if (bojs[i].pijuni[pij].gor == true)
+				bojs[i].pijuni[pij].y -= kp;
+			if (provjeri(bojs, i, pij, &okretaj[0][0], rando))
+				rando++;
+		}
+	}
+
 	korak(bojs, i, pij, x);
 	if (bojs[i].pijuni[pij].start)
 		bojs[i].pijuni[pij].start = false;
 
 	jedenje(x, bojs, i, pij);
+	return 1;
 }
 
 void bojaj(float x, boja* bojs)
@@ -683,7 +779,6 @@ void igra(float x, boja* bojs)
 			{
 				kretanje(x,bojs,i);
 				cout << endl;
-				bojaj(x, bojs);
 			}
 		}
 	}
