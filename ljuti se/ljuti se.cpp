@@ -360,9 +360,11 @@ bool provjeri(boja* bojs, int boj, int pij, float* okretaj, int rando)
 				if (i == 18 && bojs[boj].pijuni[pij].start == false) {
 					ran = true;
 				}
+				if (bojs[i].pijuni[pij].y == 1080.0 / 2)
+				{
+					cout << "test" << endl;
+				}
 				bojs[boj].pijuni[pij].des = true;
-				cout << bojs[boj].pijuni[pij].x << " - x" << endl;
-				cout << bojs[boj].pijuni[pij].y << " - y" << endl;
 				//cout << "des true" << endl;
 
 				break;
@@ -640,14 +642,6 @@ void bojaj(float x, boja* bojs)
 }
 
 bool koraci(float x, boja* bojs, int i, int pij, float kp, int rando) {
-	//if (bojs[i].pijuni[pij].x == x / 2 - kp * 5 && bojs[i].pijuni[pij].y == x / 2) 
-	//{
-	//	;!!!
-	//}
-	//if (bojs[i].pijuni[pij].x == x / 2 - kp * 5 && bojs[i].pijuni[pij].y == x / 2+kp)
-	//{
-	//	;!!
-	//}
 	float sx = bojs[i].pijuni[pij].x;
 	float sy = bojs[i].pijuni[pij].y;
 	float rm = x / 48;
@@ -702,7 +696,6 @@ bool koraci(float x, boja* bojs, int i, int pij, float kp, int rando) {
 				cout << "gore" << endl;
 				bojs[i].pijuni[pij].y -= kp;
 			}
-			//if(bojs[i].pijuni[pij].cilj==false)!!!!
 			provjeri(bojs, i, pij, &okretaj[0][0], rando);
 			kuckret(bojs, i, pij, &kuca[0][0], rando);
 			if (provjer(bojs, i, pij, x) == 0) {
@@ -880,6 +873,7 @@ int main()
 	cleardevice();
 	ljuti(x);
 
+	delay(5000);
 	getch();
 	closegraph();
 	return 0;
