@@ -523,7 +523,15 @@ void pojedi(float x, boja* bojs, int boj, int pij)
 	bojs[boj].pijuni[pij].gor = false;
 	bojs[boj].pijuni[pij].dol = false;
 
-
+	pijun zam, prvi, drug;
+	prvi = bojs[boj].pijuni[pij];
+	if(pij==4)
+		drug = bojs[boj].pijuni[0];
+	else
+		drug = bojs[boj].pijuni[pij + 1];
+	zam = prvi;
+	prvi = drug;
+	drug = zam;
 
 	float pom = (1.0 / 3) * x;//360
 	float p1 = x / 6;//180
@@ -989,8 +997,7 @@ int kretanje(float x, boja* bojs, int boj)
 	else {
 		do {
 			getch();
-			//ran = (rand() % 6) + 1;
-			ran = 1;
+			ran = (rand() % 6) + 1;
 			cout << ran << endl;
 			if (ran == 6) { //ako nema nikoga na polju
 				smije = true;
