@@ -219,19 +219,23 @@ void pijuni(float x, boja* bojs)
 		system("CLS");
 		cout << "Koliko igraca igra: ";
 		cin >> br;
-		//br = 1;
 	} while (br <= 0 || br >= 5);
-	for (; br != 0; br--)
+	if (br != 4)
 	{
-		do {
-			cout << "Boja \n1-zuta\n2-plava\n3-crvena\n4-zelena\n";
-			cin >> boj;
-			//boj = 1;
-		} while (boj <= 0 || br >= 5);
-		stvori(boj - 1, x, &bojs[0]);
+		for (; br != 0; br--)
+		{
+			do {
+				cout << "Boja \n1-zuta\n2-plava\n3-crvena\n4-zelena\n";
+				cin >> boj;
+			} while (boj <= 0 || br >= 5);
+			stvori(boj - 1, x, &bojs[0]);
+		}
 	}
-
-
+	else
+		for (; br != 0; br--) {
+			boj = br;
+			stvori(boj - 1, x, &bojs[0]);
+		}
 }
 
 bool vanine(int i, boja* bojs)
@@ -525,7 +529,7 @@ void pojedi(float x, boja* bojs, int boj, int pij)
 
 	pijun zam, prvi, drug;
 	prvi = bojs[boj].pijuni[pij];
-	if(pij==4)
+	if (pij == 4)
 		drug = bojs[boj].pijuni[0];
 	else
 		drug = bojs[boj].pijuni[pij + 1];
@@ -714,7 +718,7 @@ bool kucica(boja* bojs, int boj, int pij, float x)
 		else
 			bojs[boj].pijuni[pij].cilj = false;
 	}
-	if (bojs[boj].pijuni[pij].cilj) 
+	if (bojs[boj].pijuni[pij].cilj)
 	{
 		return 1;
 	}
@@ -778,14 +782,14 @@ void error(boja* bojs, int boj, int pij, float x)
 	if (boj == 0) {
 		if (bojs[boj].pijuni[pij].y == x / 2 + kp)
 		{
-			if (bojs[boj].pijuni[pij].x == kp) 
+			if (bojs[boj].pijuni[pij].x == kp)
 			{
 				bojs[boj].pijuni[pij].dol = false;
 				bojs[boj].pijuni[pij].gor = true;
 				bojs[boj].pijuni[pij].lij = false;
 				bojs[boj].pijuni[pij].des = false;
 			}
-			else 
+			else
 			{
 				bojs[boj].pijuni[pij].dol = false;
 				bojs[boj].pijuni[pij].gor = false;
@@ -816,7 +820,7 @@ void error(boja* bojs, int boj, int pij, float x)
 	if (boj == 2) {
 		if (bojs[boj].pijuni[pij].y == x / 2 - kp)
 		{
-			if (bojs[boj].pijuni[pij].x == x-kp)
+			if (bojs[boj].pijuni[pij].x == x - kp)
 			{
 				bojs[boj].pijuni[pij].dol = true;
 				bojs[boj].pijuni[pij].gor = false;
@@ -835,7 +839,7 @@ void error(boja* bojs, int boj, int pij, float x)
 	if (boj == 3) {
 		if (bojs[boj].pijuni[pij].x == x / 2 + kp)
 		{
-			if (bojs[boj].pijuni[pij].y == x-kp)
+			if (bojs[boj].pijuni[pij].y == x - kp)
 			{
 				bojs[boj].pijuni[pij].dol = false;
 				bojs[boj].pijuni[pij].gor = false;
